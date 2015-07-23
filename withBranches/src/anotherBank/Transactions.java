@@ -1,4 +1,4 @@
-package Bank;
+package anotherBank;
 
 /**
  * Created by krikun on 23.07.2015.

@@ -1,4 +1,4 @@
-package Bank;
+package anotherBank;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ public class Transaction {
     public static final int WITHDRAW = 2;
     public static final int PAY_INTERESTS = 3;
     public static final int TRANSFER = 4;
+    public static final int ERROR = -1;
 
     private static int idGererator=0;
     private int id;
@@ -62,8 +63,8 @@ public class Transaction {
         String result;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss.SS");
         result = "[" + dateFormat.format(date) + "] " + "#" + id + " " +
-                description + " change balance: " + Bank.getFormatedDouble(balance);
-        result += " customers: [";
+                description + " change amount: " + Bank.getFormatedDouble(balance);
+        result += " customers ids: [";
 
         ListIterator<Customer> iterator = customers.listIterator();
         while (iterator.hasNext()){

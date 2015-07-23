@@ -1,4 +1,4 @@
-package Bank;
+package anotherBank;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,6 +43,10 @@ public class Customer {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public String getBalanceString() {
+        return Bank.getFormatedDouble(balance);
     }
 
     public String getFirstName() {

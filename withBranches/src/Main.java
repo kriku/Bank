@@ -1,6 +1,7 @@
-import Bank.Bank;
-import Bank.Branch;
-import Bank.Customer;
+import anotherBank.Bank;
+import anotherBank.Branch;
+import anotherBank.Customer;
+import anotherBank.Names;
 
 import java.util.Date;
 import java.util.Random;
@@ -23,7 +24,8 @@ public class Main {
 
         for (int i=0; i<100; i++) {
             Branch randomBranch = getRandomBranch(bank);
-            Customer customer = new Customer(randomBranch, random.nextDouble()*10000000, "customer" + i, "lastName", new Date());
+            Customer customer = new Customer(randomBranch, random.nextDouble()*10000000,
+                    Names.getRandomFirstName(), Names.getRandomLastName(), new Date());
             randomBranch.addCustomer(customer);
         }
 
@@ -49,20 +51,20 @@ public class Main {
 
     private static void doRandomAction(Bank bank, Customer customer) {
         int action = random.nextInt(4);
-        double balance = random.nextDouble()*1000;
+        double amount = random.nextDouble()*1000000;
         switch (action) {
             case 0:
-                bank.deposit(customer, balance);
+                bank.deposit(customer, amount);
                 break;
             case 1:
-                bank.withdraw(customer, balance);
+                bank.withdraw(customer, amount);
                 break;
             case 2:
                 Customer randomCustomer;
                 do {
                     randomCustomer = getRandomCustomer(bank);
                 } while (randomCustomer.getId() == customer.getId());
-                bank.transfer(customer, randomCustomer, balance);
+                bank.transfer(customer, randomCustomer, amount);
                 break;
             case 3:
                 bank.payInterests(customer);

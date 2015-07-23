@@ -1,4 +1,4 @@
-package Bank;
+package anotherBank;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -43,29 +43,39 @@ public class Bank implements Transactions {
         if (balance <= 0) {
             return 0;
         }
+        Transaction transaction = new Transaction("prev balance " + customer.getBalanceString() + " deposit",
+                customer, balance, Transaction.DEPOSIT);
         customer.setBalance(customer.getBalance() + balance);
-        Transaction transaction = new Transaction("deposit", customer, balance, Transaction.DEPOSIT);
         customer.getBranch().addTransaction(transaction);
         customer.addTransaction(transaction);
         return balance;
     }
 
     public double withdraw(Customer customer, double balance) {
-        if ((balance <= 0)||(customer.getBalance() < balance)) {
+        if (balance <= 0) {
             return 0;
         }
+        if (customer.getBalance() < balance) {
+            Transaction transaction = new Transaction("can't withdraw, current balance " + customer.getBalanceString(),
+                    customer, balance, Transaction.ERROR);
+            customer.getBranch().addTransaction(transaction);
+            customer.addTransaction(transaction);
+            return 0;
+        }
+        Transaction transaction = new Transaction("prev balance " + customer.getBalanceString() + " withdraw",
+                customer, balance, Transaction.WITHDRAW);
         customer.setBalance(customer.getBalance() - balance);
-        Transaction transaction = new Transaction("withdraw", customer, balance, Transaction.WITHDRAW);
         customer.getBranch().addTransaction(transaction);
         customer.addTransaction(transaction);
         return balance;
     }
 
     public double transfer(Customer from, Customer to, double balance) {
-        if (withdraw(from, balance) == 0) {
+        if (withdraw(from, balance) <= 0) {
             return 0;
         }
-        Transaction transaction = new Transaction("transfer", from, to, balance);
+        Transaction transaction = new Transaction("transfer from \"" + from.getFullName() + "\" to \"" + to.getFullName() + "\"",
+                from, to, balance);
         // add transaction to branch
         if (!from.getBranch().equals(to.getBranch())) {
             from.getBranch().addTransaction(transaction);
