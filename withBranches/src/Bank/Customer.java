@@ -2,6 +2,7 @@ package Bank;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.ListIterator;
 
 /**
  * Created by krikun on 23.07.2015.
@@ -10,17 +11,17 @@ public class Customer {
     private static int idGenerator=0;
     private int id;
     private double balance;
-    private double percent = 0;
+    private double percent;
     private String firstName;
     private String lastName;
     private Date birthDate;
-    private ArrayList<String> log = new ArrayList<>();
+    private ArrayList<Transaction> transactions = new ArrayList<>();
     private Branch branch;
 
     public Customer(Branch branch, double balance, String firstName, String lastName, Date birthDate) {
         this.branch = branch;
         this.balance = balance;
-        calcPercent();
+        this.percent = Bank.getAccountPercent(balance);
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -68,20 +69,20 @@ public class Customer {
         this.birthDate = birthDate;
     }
 
-    public ArrayList<String> getLog() {
-        return log;
-    }
-
-    public void setLog(ArrayList<String> log) {
-        this.log = log;
+    public Branch getBranch() {
+        return branch;
     }
 
     public void setBranch(Branch branch) {
         this.branch = branch;
     }
 
-    public void addLogMessage(String message) {
-        this.log.add(message);
+    public double getPercent() {
+        return percent;
+    }
+
+    public void setPercent(double percent) {
+        this.percent = percent;
     }
 
     public String getFullName() {
@@ -89,61 +90,25 @@ public class Customer {
     }
 
     public String getListString() {
-        return "#" + id + " " + firstName + " " + lastName + " [balance: " + balance + "]";
+        return "#id[" + id + "] " + getFullName() + " [current balance: " + Bank.getFormatedDouble(balance) + "]";
     }
 
-    public void calcPercent() {
-        double percent = 0;
-        if (balance > 5000000) {
-            this.percent = 0.01;
+    public void addTransaction(Transaction transaction) {
+        this.transactions.add(transaction);
+    }
+
+    public String getTransactionsString() {
+        ListIterator<Transaction> iterator = transactions.listIterator();
+        String result = "";
+        while (iterator.hasNext()){
+            result += iterator.next().getTransactionString();
+            result += (iterator.hasNext())? "\n" : "";
         }
-        if (balance > 5000) {
-            this.percent = 0.05;
+
+        if (transactions.isEmpty()) {
+            return "customer has no transactions";
         }
+        return result;
     }
-
-    public double deposit(double balance) {
-        if (balance < 0) {
-            return 0;
-        }
-        this.balance += balance;
-        log.add("deposit: " + balance);
-        Transaction transaction = new Transaction("deposit", this, balance, Transaction.DEPOSIT);
-        this.branch.addTransaction(transaction);
-        return balance;
-    }
-
-    public double withdraw(double balance) {
-        if ((balance < 0)||(this.balance < balance)) {
-            return 0;
-        }
-        this.balance -= balance;
-        log.add("withdraw: " + balance);
-        Transaction transaction = new Transaction("withdraw", this, balance, Transaction.WITHDRAW);
-        this.branch.addTransaction(transaction);
-        return balance;
-    }
-
-    public double transfer(Customer customer, double balance) {
-        if (this.withdraw(balance) == 0) {
-            return 0;
-        }
-        customer.deposit(balance);
-        log.add("transfer: " + balance + " to: #" + customer.getId() + " " + customer.getFullName());
-        Transaction transaction = new Transaction("transfer", this, customer, balance);
-        this.branch.addTransaction(transaction);
-        return balance;
-    }
-
-    public double payInterests() {
-        double sum = this.balance * this.percent;
-        this.balance += sum;
-        log.add("pay interests: " + sum);
-        Transaction transaction = new Transaction("pay", this, balance, Transaction.PAY_INTERESTS);
-        this.branch.addTransaction(transaction);
-        return sum;
-    }
-
-//    TODO: add print full log of transactions
 
 }

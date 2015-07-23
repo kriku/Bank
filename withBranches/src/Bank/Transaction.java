@@ -1,5 +1,6 @@
 package Bank;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ListIterator;
@@ -23,14 +24,17 @@ public class Transaction {
     private ArrayList<Customer> customers = new ArrayList<>();
 
     /**
-     * constructor for default transaction
+     * constructor for deposit, withdraw, payInterests transactions
+     * (there are one customer in list)
      * @param description
      * @param customer
+     * @param balance
      * @param type
      */
     public Transaction(String description, Customer customer, double balance, int type) {
         this.description = description;
         this.date = new Date();
+        this.balance = balance;
         this.customers.add(customer);
         this.id = idGererator;
         idGererator++;
@@ -38,26 +42,35 @@ public class Transaction {
 
     /**
      * constructor for transfer transaction
+     * (in this transaction two customers: first - from, second - to
      * @param description
      * @param from
      * @param to
+     * @param balance
      */
     public Transaction(String description, Customer from, Customer to, double balance) {
         this(description, from, balance, TRANSFER);
         this.customers.add(to);
     }
 
-    public String getTransaction() {
+    /**
+     * this method concat all parameters of transaction in one string
+     * and customers list on another line, divided by comma
+     * @return
+     */
+    public String getTransactionString() {
         String result;
-        result = "#" + id + " " + description + " [" + date.toString() + "]\n";
-        result += "customers: [";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss.SS");
+        result = "[" + dateFormat.format(date) + "] " + "#" + id + " " +
+                description + " change balance: " + Bank.getFormatedDouble(balance);
+        result += " customers: [";
 
         ListIterator<Customer> iterator = customers.listIterator();
-        do {
+        while (iterator.hasNext()){
             Customer customer = iterator.next();
             result += customer.getId();
             if (iterator.hasNext()) result += ", ";
-        } while (iterator.hasNext());
+        }
 
         result += "]";
 
