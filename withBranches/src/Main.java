@@ -1,7 +1,7 @@
-import anotherBank.Bank;
-import anotherBank.Branch;
-import anotherBank.Customer;
-import anotherBank.Names;
+import bank.Bank;
+import bank.Branch;
+import bank.Customer;
+import bank.Names;
 
 import java.util.Date;
 import java.util.Random;
