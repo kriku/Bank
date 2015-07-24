@@ -43,7 +43,7 @@ public class Bank implements Transactions {
         if (balance <= 0) {
             return 0;
         }
-        Transaction transaction = new Transaction("prev balance " + customer.getBalanceString() + " deposit",
+        Transaction transaction = new Transaction("DEPOSIT: prev balance " + customer.getBalanceString(),
                 customer, balance, Transaction.DEPOSIT);
         customer.setBalance(customer.getBalance() + balance);
         customer.getBranch().addTransaction(transaction);
@@ -56,13 +56,13 @@ public class Bank implements Transactions {
             return 0;
         }
         if (customer.getBalance() < balance) {
-            Transaction transaction = new Transaction("can't withdraw, current balance " + customer.getBalanceString(),
+            Transaction transaction = new Transaction("ERROR: can't withdraw, current balance " + customer.getBalanceString() + " try",
                     customer, balance, Transaction.ERROR);
             customer.getBranch().addTransaction(transaction);
             customer.addTransaction(transaction);
             return 0;
         }
-        Transaction transaction = new Transaction("prev balance " + customer.getBalanceString() + " withdraw",
+        Transaction transaction = new Transaction("WITHDRAW: prev balance " + customer.getBalanceString(),
                 customer, balance, Transaction.WITHDRAW);
         customer.setBalance(customer.getBalance() - balance);
         customer.getBranch().addTransaction(transaction);
@@ -74,7 +74,7 @@ public class Bank implements Transactions {
         if (withdraw(from, balance) <= 0) {
             return 0;
         }
-        Transaction transaction = new Transaction("transfer from \"" + from.getFullName() + "\" to \"" + to.getFullName() + "\"",
+        Transaction transaction = new Transaction("TRANSFER: from \"" + from.getFullName() + "\" to \"" + to.getFullName() + "\"",
                 from, to, balance);
         // add transaction to branch
         if (!from.getBranch().equals(to.getBranch())) {
@@ -92,8 +92,9 @@ public class Bank implements Transactions {
 
     public double payInterests(Customer customer) {
         double sum = customer.getBalance()*customer.getPercent();
+        Transaction transaction = new Transaction("PAY: prev balance " + customer.getBalanceString(),
+                customer, sum, Transaction.PAY_INTERESTS);
         customer.setBalance(customer.getBalance() + sum);
-        Transaction transaction = new Transaction("pay", customer, sum, Transaction.PAY_INTERESTS);
         customer.getBranch().addTransaction(transaction);
         customer.addTransaction(transaction);
         return sum;

@@ -49,7 +49,7 @@ public class Branch {
         String result = "";
         while (iterator.hasNext()) {
             Customer customer = iterator.next();
-            result += iterator.nextIndex() + " - " + customer.getListString();
+            result += iterator.previousIndex() + " - " + customer.getListString();
             result += (iterator.hasNext())? "\n" : "";
         }
         return result;

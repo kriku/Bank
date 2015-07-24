@@ -64,7 +64,7 @@ public class Transaction {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss.SS");
         result = "[" + dateFormat.format(date) + "] " + "#" + id + " " +
                 description + " change amount: " + Bank.getFormatedDouble(balance);
-        result += " customers ids: [";
+        result += " involved customers (id): [";
 
         ListIterator<Customer> iterator = customers.listIterator();
         while (iterator.hasNext()){

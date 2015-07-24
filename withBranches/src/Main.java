@@ -80,6 +80,7 @@ public class Main {
                 "4 - show transaction for user from some branch\n" +
                 "0 - exit");
         Scanner scanner = new Scanner(System.in);
+        System.out.print("> ");
         int choice = scanner.nextInt();
         switch (choice) {
             case 0:
@@ -106,12 +107,14 @@ public class Main {
     private static int choiceBranch(Bank bank, Scanner scanner) {
         System.out.println(bank.getBranchesNames());
         System.out.println("select branch index:");
+        System.out.print("> ");
         return scanner.nextInt();
     }
 
     private static int choiceUser(Branch branch, Scanner scanner) {
         System.out.println(branch.getCustomersString());
         System.out.println("select user number:");
+        System.out.print("> ");
         return scanner.nextInt();
     }
 
