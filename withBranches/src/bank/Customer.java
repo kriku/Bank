@@ -33,10 +33,6 @@ public class Customer {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public double getBalance() {
         return balance;
     }
@@ -93,7 +89,7 @@ public class Customer {
         return firstName + " " + lastName;
     }
 
-    public String getListString() {
+    public String getInfoString() {
         return "#id[" + id + "] " + getFullName() + " [current balance: " + Bank.getFormatedDouble(balance) + "]";
     }
 
@@ -104,6 +100,7 @@ public class Customer {
     public String getTransactionsString() {
         ListIterator<Transaction> iterator = transactions.listIterator();
         String result = "";
+
         while (iterator.hasNext()){
             result += iterator.next().getTransactionString();
             result += (iterator.hasNext())? "\n" : "";
@@ -113,6 +110,10 @@ public class Customer {
             return "customer has no transactions";
         }
         return result;
+    }
+
+    public int getTransactionCount() {
+        return transactions.size();
     }
 
 }

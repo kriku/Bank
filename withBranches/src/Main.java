@@ -30,8 +30,7 @@ public class Main {
         }
 
         for (int i=0; i<100; i++) {
-            Customer customer = getRandomCustomer(bank);
-            doRandomAction(bank, customer);
+            doRandomAction(bank);
         }
 
         showTransactionMenu(bank);
@@ -49,7 +48,8 @@ public class Main {
         return branch.getCustomer(random.nextInt(branch.getCustomersCount()));
     }
 
-    private static void doRandomAction(Bank bank, Customer customer) {
+    private static void doRandomAction(Bank bank) {
+        Customer customer = getRandomCustomer(bank);
         int action = random.nextInt(4);
         double amount = random.nextDouble()*1000000;
         switch (action) {
