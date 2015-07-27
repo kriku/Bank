@@ -13,6 +13,7 @@ public class TransactionTest {
     public void testGetTransactionString() throws Exception {
         Customer customer = new Customer(null, 0, "", "", null);
         Transaction transaction = new Transaction("test", customer, 10, 0);
-        assertEquals(" #0 test change amount: 10 involved customers (id): [0]", transaction.getTransactionString().substring(25));
+        assertEquals(" #" + transaction.getId() + " test change amount: 10 involved customers (id): [" +
+                customer.getId() + "]", transaction.getTransactionString().substring(25));
     }
 }

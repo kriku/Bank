@@ -16,7 +16,7 @@ public class Transaction {
     public static final int TRANSFER = 4;
     public static final int ERROR = -1;
 
-    private static int idGererator=0;
+    private static int idGererator = 0;
     private int id;
     private String description;
     private int type;
@@ -52,6 +52,10 @@ public class Transaction {
     public Transaction(String description, Customer from, Customer to, double balance) {
         this(description, from, balance, TRANSFER);
         this.customers.add(to);
+    }
+
+    public int getId() {
+        return id;
     }
 
     /**
